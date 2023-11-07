@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import shortuuid
+import json
 shorturl = Flask(__name__)
 
 # Creating a dictionary to keep track of the data
@@ -21,15 +22,28 @@ def encode():
             id = shortuuid.ShortUUID().random(length=6)
             url = request.form['url']
             URL_LIST[id] = url
-        return jsonify({id:url})
-    except Exception as e:
-        return e
 
-@shorturl.route("/decode")
+        return jsonify({id:url})
+
+    except Exception as e:
+        return jsonify(e)
+
+
+@shorturl.route("/decode", methods=["POST"])
 def decode():
-    original_url = UID_LIST[shortURL]
-    return "<p>decoded url</p>"
-    #return decode(url)
+    """Decode a shorturl id into the original url passed before it was shortened
+
+    Returns:
+        json : the original url submitted, before the url shortening
+    """
+    try:
+        if request.form['shorturl_id']:
+            id = request.form['shorturl_id']
+
+        return jsonify({URL_LIST[id]})
+
+    except Exception as e:
+        return json.dumps(e)
 
 # Needed for VSCode debugger
 if __name__ == '__main__':
