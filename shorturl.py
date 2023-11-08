@@ -6,6 +6,7 @@ from flask_limiter import Limiter
 
 
 shorturl = Flask(__name__)
+limiter = Limiter(app=shorturl, key_func= lambda: 'global', default_limits=["2 per second"])
 
 # Creating a dictionary to keep track of the data
 URL_LIST = {}
