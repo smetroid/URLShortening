@@ -1,2 +1,4 @@
 Flask==3.0.0
 shortuuid==1.0.11
+pytest==7.4.3
+urlparser==0.1.2
