@@ -10,7 +10,7 @@ URL_LIST = {}
 def root():
     return "<p>this is root</p>"
 
-@shorturl.route("/encode", methods=["POST"])
+@shorturl.route("/encode", methods=["POST", "GET"])
 def encode():
     """generate a shortened url
 
@@ -18,15 +18,17 @@ def encode():
         json: a serializable json object with a shortkey
     """
     try:
-        if request.form['url']:
+        data = request.data
+        if type(data) is not str and data is not None:
+            original_url = json.loads(data)
             id = shortuuid.ShortUUID().random(length=6)
-            url = request.form['url']
+            url = original_url['url']
             URL_LIST[id] = url
 
         return jsonify({id:url})
 
     except Exception as e:
-        return jsonify(e)
+        return jsonify(e.msg)
 
 
 @shorturl.route("/decode", methods=["POST"])
@@ -45,6 +47,6 @@ def decode():
     except Exception as e:
         return json.dumps(e)
 
-# Needed for VSCode debugger
+    # Needed for VSCode debugger
 if __name__ == '__main__':
     shorturl.run(use_debugger=False, use_reloader=False, passthrough_errors=True)
