@@ -25,7 +25,6 @@ def get_tld(url):
     tld = scheme+"://"+hostname
     return tld
 
-
 @shorturl.route("/")
 def root():
     return "<p>this is root</p>"
@@ -36,25 +35,27 @@ def encode():
     """generate a shortened url
 
     Returns:
-        json: a serializable json object with a shortkey
+        json: a serializable json object with an id, short url, and the original url 
     """
     try:
         data = request.data
-        if type(data) is not str and data is not None:
+        if type(data) is not str and data is not None and len(data) > 0:
             original_url = json.loads(data)
             id = shortuuid.ShortUUID().random(length=6)
             url = original_url['url']
             domain = get_tld(url)
             short_url = domain +"/" + id
             URL_LIST[id] = url
+            return jsonify({"id":id,"short_url": short_url, "original_url":url})
+        else:
+            return jsonify({})
 
-        return jsonify({"id":id,"short_url": short_url, "original_url":url})
 
     except Exception as e:
         return jsonify(e)
 
 
-@shorturl.route("/decode", methods=["POST"])
+@shorturl.route("/decode", methods=["POST", "GET"])
 def decode():
     """Decode a shorturl id into the original url passed before it was shortened
 
@@ -62,13 +63,21 @@ def decode():
         json : the original url submitted, before the url shortening
     """
     try:
-        if request.form['shorturl_id']:
-            id = request.form['shorturl_id']
+        data = request.data
+        # TODO: check for json data
+        if type(data) is not str and len(data) > 0:
+            shorturl_data = json.loads(data)
+            id = shorturl_data['id']
+        else:
+            return jsonify({})
 
-        return jsonify({URL_LIST[id]})
+        #TODO: fix this return, DRY ...
+        return jsonify({"id":id,"original_url":URL_LIST[id]})
 
+    except KeyError as e:
+        return jsonify({"msg": "id submitted does not exist"})
     except Exception as e:
-        return json.dumps(e)
+        return jsonify(e)
 
     # Needed for VSCode debugger
 if __name__ == '__main__':
