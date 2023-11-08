@@ -11,14 +11,19 @@ URL_LIST = {}
 
 
 def get_tld(url):
+    """Get top level domain/information from url
+
+    Args:
+        url (string): url to parse
+
+    Returns:
+        string : top level information of an url ... eg: https://www.yahoo.com
+    """
     parsed_url = urlparse(url)
-    if parsed_url.netloc:
-        parts = parsed_url.netloc.split('.')
-        if len(parts) >= 2:
-            tld= parts[-1]
-            domain = parts[-2]
-            return f"{domain}.{tld}"
-    return None
+    scheme = parsed_url.scheme
+    hostname = parsed_url.hostname
+    tld = scheme+"://"+hostname
+    return tld
 
 
 @shorturl.route("/")
@@ -36,7 +41,6 @@ def encode():
     try:
         data = request.data
         if type(data) is not str and data is not None:
-            # TODO: need to take the domain from the url being passed
             original_url = json.loads(data)
             id = shortuuid.ShortUUID().random(length=6)
             url = original_url['url']
