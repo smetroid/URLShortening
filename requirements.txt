@@ -1,4 +1,10 @@
-Flask==3.0.0
-shortuuid==1.0.11
+click<8.0.0
+coverage==7.3.2
+Flask
 pytest==7.4.3
+shortuuid==1.0.11
+urllib3==2.0.7
 urlparser==0.1.2
+Werkzeug==2.2.2
+Flask-Limiter
+waitress
