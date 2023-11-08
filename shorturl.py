@@ -48,12 +48,11 @@ def encode():
         if request.method == 'GET':
             return jsonify({'message':'Get request succeeded'})
 
-    # handling the GET request when no data is passed
     except json.JSONDecodeError as e:
-            return jsonify({'message':'unable to parse request data ... please check documentation'})
+            return jsonify({'message':'unable to parse passed data'})
 
     except Exception as e:
-        return jsonify({'message':'Exception'})
+        return jsonify({'message':'Exception','error': e})
 
 
 @shorturl.route('/decode', methods=['POST', 'GET'])
@@ -72,9 +71,8 @@ def decode():
         if request.method == 'GET':
             return jsonify({'message':'Get request succeeded'})
 
-    # handling the GET request when no data is passed
     except json.JSONDecodeError as e:
-            return jsonify({'message':'unable to parse request data ... please check documentation'})
+            return jsonify({'message':'unable to parse passed data'})
 
     except KeyError:
         return jsonify({'message':'specific key passed not found'})
