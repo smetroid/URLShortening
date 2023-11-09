@@ -1,8 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import shortuuid
 import json
 from urllib.parse import urlparse
 from flask_limiter import Limiter
+import markdown.extensions.fenced_code
+import os
+from markupsafe import Markup
 
 
 shorturl = Flask(__name__)
@@ -26,6 +29,17 @@ def get_tld(url):
     hostname = parsed_url.hostname
     tld = scheme+'://'+hostname
     return tld
+
+
+@shorturl.route('/')
+def index():
+    try:
+        readme_file = open("README.md", "r")
+    except:
+        readme_file = open("../README.md", "r")
+    return render_template("index.html",
+        markdown=Markup(markdown.markdown(readme_file.read(), extensions=["fenced_code"]))
+    )
 
 
 @shorturl.route('/encode', methods=['POST', 'GET'])

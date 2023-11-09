@@ -1,0 +1,13 @@
+<!-- index.html-->
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="jumbotron">
+  <h1>URL Shortening Service</h1>
+  <p class="lead">A simple service to shorten a long url.</p>
+</div>
+<div class="markdown">
+  {{ markdown }}
+</div>
+{% endblock %}
