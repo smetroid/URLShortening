@@ -43,7 +43,7 @@ Setup up an api endpoint to take a websites url (eg: https://someapp.com/catalog
     Result:
 
     ```
-    {"id":"rcj3GA","short_url":"https://www.yahoo.com/rcj3GA"}
+    {"id":"4LoFSC","short_url":"https://www.yahoo.com/4LoFSC"}
     ```
 
 2. Retrieving original URL using the id above
@@ -55,7 +55,7 @@ Setup up an api endpoint to take a websites url (eg: https://someapp.com/catalog
     Result:
 
     ```
-    {"id":"rcj3GA","original_url":"https://www.yahoo.com/news/trump-legal-news-brief-live-updates-as-trump-takes-the-witness-stand-154827487.html"}
+    {"id":"4LoFSC","original_url":"https://www.yahoo.com/news/dog-adopted-7-years-pennsylvania-210548824.html"}
     ```
 
 ## Running Development Environment
