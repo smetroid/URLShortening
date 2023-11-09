@@ -8,3 +8,4 @@ urlparser==0.1.2
 Werkzeug==2.2.2
 Flask-Limiter
 waitress
+Markdown
